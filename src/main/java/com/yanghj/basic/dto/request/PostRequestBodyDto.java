@@ -10,7 +10,7 @@ import lombok.Setter;
 // description: Lombok 라이브러리 - 클래스 생성시에 반복적으로 작성하는 메서드를 간편하게 생성해주는 라이브러리 //
 @Getter // getter //
 @Setter // setter //
-@NoArgsConstructor // 빈 생성자 //
+@NoArgsConstructor // 매게변수 없는 생성자 //
 @AllArgsConstructor // 모두 포함된 생성자 //
 public class PostRequestBodyDto {
     private String name;

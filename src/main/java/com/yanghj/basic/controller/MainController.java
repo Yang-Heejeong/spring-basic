@@ -21,7 +21,7 @@ import com.yanghj.basic.dto.request.PostRequestBodyDto;
 // description: Response Body의 타입이 JSON 형태의 데이터를 반환 //
 @RestController
 // description: @REsquestMapping - Request의 URL 패턴에 따라 클래스 및 메소드를 결정하는 어노테이션 //
-@RequestMapping("/")    // http://localhost:4000/**
+@RequestMapping("/")    // http://localhost:4000/** // 원래는 "/"이가 아닌 api/버전정보/module 이런 식으로 적어야 함!
 // @RequestMapping("/main")    http://localhost:4000/main/**
 public class MainController {
 
