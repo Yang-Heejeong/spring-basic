@@ -3,6 +3,7 @@ package com.yanghj.basic.controller;
 import javax.validation.Valid;
 
 import org.apache.catalina.connector.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,6 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.yanghj.basic.dto.request.PatchValidationDto;
 import com.yanghj.basic.dto.request.PostRequestBodyDto;
 import com.yanghj.basic.dto.response.TmpResponseDto;
+import com.yanghj.basic.service.MainService;
+import com.yanghj.basic.service.implement.MainServiceImplement;
+
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 // description: Controller - 레이어드 아키텍처 상의 프레젠터이션 영역 //
 // description: 클라이언트로부터 요청(입력)을 받고 서비스 결과를 응답(출력)하는 영역 //
@@ -30,7 +36,11 @@ import com.yanghj.basic.dto.response.TmpResponseDto;
 // description: @REsquestMapping - Request의 URL 패턴에 따라 클래스 및 메소드를 결정하는 어노테이션 //
 @RequestMapping("/")    // http://localhost:4000/** // 원래는 "/"이가 아닌 api/버전정보/module 이런 식으로 적어야 함!
 // @RequestMapping("/main")    http://localhost:4000/main/**
+// @AllArgsConstructor // 자동으로 생성
+@RequiredArgsConstructor // final이 붙은 것만 자동으로 생성된다.
 public class MainController {
+
+    private final MainService mainService;
 
     // http://localhost:4000/hello GET
     @RequestMapping(value = "hello", method = {RequestMethod.POST})
@@ -43,7 +53,7 @@ public class MainController {
     // description: 데이터 입력 시 URL로 입력 - 헤더 //
     @GetMapping("")
     public String getMethod() {
-        return "This method is Get Method";
+        return mainService.getMethod();
     }
 
     // description: @RequestMapping 중 Post Method에 한정하여 인식 //
