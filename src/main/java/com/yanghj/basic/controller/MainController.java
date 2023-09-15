@@ -95,7 +95,8 @@ public class MainController {
     // description: 문자열 혹은 객체로 받을 수 있음 //
     @PostMapping("request-body")
     public String postRequestBody(
-        @RequestBody PostRequestBodyDto requestBody
+        // @RequestBody String requestBody -> 텍스트 형태로 받을 수 있다.
+        @RequestBody PostRequestBodyDto requestBody // -> DTO형태의 객체를 받아온다.
     ) {
         return "Request의 Body는 " + requestBody.getName() + " " + requestBody.getAge() + " 입니다.";
     }
