@@ -2,6 +2,9 @@ package com.yanghj.basic.controller;
 
 import javax.validation.Valid;
 
+import org.apache.catalina.connector.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.yanghj.basic.dto.request.PatchValidationDto;
 import com.yanghj.basic.dto.request.PostRequestBodyDto;
+import com.yanghj.basic.dto.response.TmpResponseDto;
 
 // description: Controller - 레이어드 아키텍처 상의 프레젠터이션 영역 //
 // description: 클라이언트로부터 요청(입력)을 받고 서비스 결과를 응답(출력)하는 영역 //
@@ -106,9 +110,16 @@ public class MainController {
 
     @PatchMapping("validation")
     public String validation(
+        // description: DTO에 작성된 유효성 검사를 적용하려한다면 @Valid를 매개변수 자리에 추가해줘야 함 //
         @RequestBody @Valid PatchValidationDto requestBody
     ) {
         return requestBody.getArg1();
+    }
+
+    @GetMapping("response-entitiy")
+    public ResponseEntity<TmpResponseDto> getReponseEntity() {
+        TmpResponseDto responseBody = new TmpResponseDto("안녕하세요", 10);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
     
 }
