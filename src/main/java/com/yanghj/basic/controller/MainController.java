@@ -41,6 +41,7 @@ import lombok.RequiredArgsConstructor;
 public class MainController {
     
     // description: @Autowired - Java bean으로 등록되어 있는 클래스에 대해서 제어의 역전을 통해 의존성을 주입하는 어노테이션 //
+    // @Autowired
     // description: IoC(제어의 역전)를 통해서 DI(의존성 주입)하는 방법 //
     // description: 1. 멤버변수를 사용한 DI //
     // description: 2. setter 메서드를 사용한 DI //
