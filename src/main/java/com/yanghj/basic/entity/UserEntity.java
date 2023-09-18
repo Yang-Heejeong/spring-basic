@@ -5,8 +5,13 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 // description: Entity - JPA를 사용할 때 데이터베이스의 테이블과 매핑되는 Java 객체 //
 
+@Getter
+@AllArgsConstructor
 // description: @Entity - 해당 클래스를 JPA Entity로 사용하겠다고 지정하는 어노테이션 //
 @Entity(name="user") // user 엔터티를 사용할 때 user 이름을 쓰겠다. 쿼리에 적을 적에 사용되는 이름. 데이터베이스 테이블에 썼던 이름과는 무관하다.
 // description: @Table - 해당 Entity 클래스가 데이터베이스의 어떤 테이블과 매핑될지를 명시하는 어노테이션 //
