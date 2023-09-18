@@ -5,12 +5,16 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.yanghj.basic.dto.request.PostUserRequestDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 // description: Entity - JPA를 사용할 때 데이터베이스의 테이블과 매핑되는 Java 객체 //
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 // description: @Entity - 해당 클래스를 JPA Entity로 사용하겠다고 지정하는 어노테이션 //
 @Entity(name="user") // user 엔터티를 사용할 때 user 이름을 쓰겠다. 쿼리에 적을 적에 사용되는 이름. 데이터베이스 테이블에 썼던 이름과는 무관하다.
@@ -27,9 +31,19 @@ public class UserEntity { // UserEntity가 아니라 User라고 적으면 테이
     private String address;
     private String addressDetail;
     private boolean agreedPersonal;
-    private String profileImageUlr;
+    private String profileImageUrl;
 
     // description: Entity 클래스의 필드와 데이터베이스 테이블의 컬럼을 명시적으로 매핑하는 어노테이션 //
     // @Column(name="profile_image_url") 
     // private String profile;
+
+    public UserEntity(PostUserRequestDto dto) {
+        this. email = dto.getEmail();
+        this. password = dto.getPassword();
+        this. nickname = dto.getNickname();
+        this. telNumber = dto.getTelNumber();
+        this. address = dto.getAddress();
+        this. addressDetail = dto.getAddressDetail();
+        this. agreedPersonal = true;
+    }
 }

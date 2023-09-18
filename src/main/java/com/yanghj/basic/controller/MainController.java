@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.yanghj.basic.dto.request.PatchValidationDto;
 import com.yanghj.basic.dto.request.PostRequestBodyDto;
+import com.yanghj.basic.dto.request.PostUserRequestDto;
+import com.yanghj.basic.dto.response.PostUserResponseDto;
+import com.yanghj.basic.dto.response.ResponseDto;
 import com.yanghj.basic.dto.response.TmpResponseDto;
 import com.yanghj.basic.service.MainService;
 import com.yanghj.basic.service.implement.MainServiceImplement;
@@ -142,6 +145,14 @@ public class MainController {
     public ResponseEntity<TmpResponseDto> getReponseEntity() {
         TmpResponseDto responseBody = new TmpResponseDto("안녕하세요", 10);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+    }
+
+    @PostMapping("user")
+    public ResponseEntity<? super PostUserResponseDto> postUser(
+        @RequestBody @Valid PostUserRequestDto requsetBody
+    ) {
+        ResponseEntity<? super PostUserResponseDto> response = mainService.postUser(requsetBody);
+        return response;
     }
     
 }
