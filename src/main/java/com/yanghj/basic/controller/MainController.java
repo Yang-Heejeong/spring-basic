@@ -18,9 +18,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.yanghj.basic.dto.request.PatchNicknameRequestDto;
 import com.yanghj.basic.dto.request.PatchValidationDto;
 import com.yanghj.basic.dto.request.PostRequestBodyDto;
 import com.yanghj.basic.dto.request.PostUserRequestDto;
+import com.yanghj.basic.dto.response.DeleteUserResponseDto;
+import com.yanghj.basic.dto.response.PatchNicknameResponseDto;
 import com.yanghj.basic.dto.response.PostUserResponseDto;
 import com.yanghj.basic.dto.response.ResponseDto;
 import com.yanghj.basic.dto.response.TmpResponseDto;
@@ -152,6 +155,22 @@ public class MainController {
         @RequestBody @Valid PostUserRequestDto requsetBody
     ) {
         ResponseEntity<? super PostUserResponseDto> response = mainService.postUser(requsetBody);
+        return response;
+    }
+
+    @PatchMapping("nickname")
+    public ResponseEntity<? super PatchNicknameResponseDto> patchNickname(
+        @RequestBody @Valid PatchNicknameRequestDto requestBody
+    ) {
+        ResponseEntity<? super PatchNicknameResponseDto> response = mainService.patchNickname(requestBody);
+        return response;
+    }
+
+    @DeleteMapping("user/{email}")
+    public ResponseEntity<? super DeleteUserResponseDto> deleteUser(
+        @PathVariable("email") String email
+    ) {
+        ResponseEntity<? super DeleteUserResponseDto> response = mainService.deleteUser(email);
         return response;
     }
     

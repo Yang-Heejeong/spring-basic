@@ -46,4 +46,8 @@ public class UserEntity { // UserEntity가 아니라 User라고 적으면 테이
         this. addressDetail = dto.getAddressDetail();
         this. agreedPersonal = true;
     }
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
 }

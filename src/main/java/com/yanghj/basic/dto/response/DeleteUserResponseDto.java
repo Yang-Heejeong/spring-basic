@@ -5,10 +5,9 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class PostUserResponseDto extends ResponseDto {
-
-    public PostUserResponseDto(String code, String message) {
+public class DeleteUserResponseDto extends ResponseDto {
+    
+    public DeleteUserResponseDto (String code, String message) {
         super(code, message);
     }
-    
 }
