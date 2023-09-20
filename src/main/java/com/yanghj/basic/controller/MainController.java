@@ -27,6 +27,7 @@ import com.yanghj.basic.dto.response.PatchNicknameResponseDto;
 import com.yanghj.basic.dto.response.PostUserResponseDto;
 import com.yanghj.basic.dto.response.ResponseDto;
 import com.yanghj.basic.dto.response.TmpResponseDto;
+import com.yanghj.basic.provider.JwtProvider;
 import com.yanghj.basic.service.MainService;
 import com.yanghj.basic.service.implement.MainServiceImplement;
 
@@ -59,6 +60,8 @@ public class MainController {
     // description: 아래 방법은 생성자를 사용한 IdC를 통한 DI이며 final로 지정하여 필수 멤버 변수로 지정 함 //
     // description: lombok 라이브러리의 @RequiredArgsConstructor를 사용하여 필수 멤버 변수의 생성자를 만듬 //
     private final MainService mainService;
+
+    private final JwtProvider jwtProvider;
 
     // http://localhost:4000/hello GET
     @RequestMapping(value = "hello", method = {RequestMethod.POST})
@@ -171,6 +174,26 @@ public class MainController {
         @PathVariable("email") String email
     ) {
         ResponseEntity<? super DeleteUserResponseDto> response = mainService.deleteUser(email);
+        return response;
+    }
+
+    @GetMapping("jwt/{value}")
+    public ResponseEntity<String> getJwt(
+        @PathVariable("value") String value
+    ) {
+        String jwt = jwtProvider.create(value);
+        ResponseEntity<String> response = ResponseEntity.status(HttpStatus.OK).body(jwt);
+
+        return response;
+    }
+
+    @PostMapping("jwt/validate")
+    public ResponseEntity<String> validateJwt(
+        @RequestBody String jwt
+    ) {
+        String subject = jwtProvider.validate(jwt);
+        ResponseEntity<String> response = ResponseEntity.status(HttpStatus.OK).body(subject);
+
         return response;
     }
     
