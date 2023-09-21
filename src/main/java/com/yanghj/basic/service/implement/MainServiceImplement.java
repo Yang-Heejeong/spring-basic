@@ -2,6 +2,8 @@ package com.yanghj.basic.service.implement;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.yanghj.basic.dto.request.PatchNicknameRequestDto;
@@ -25,6 +27,15 @@ public class MainServiceImplement implements MainService {
 
     private final UserRepository userRepository;
 
+    // description: PasswordEncoder - 비밀번호를 안전하게 암호화하고 검증하는 인터페이스 //
+    // description: BCryptPasswordEncoder - Bcrypt 해시 알고리즘을 사용하는 PasswordEncoder 구현 클래스 //
+    // 해시 : 임의의 길이의 데이터를 고정된 길이의 데이터로 매핑하는 함수 //
+    // 위와 달리 아래는 생성자를 직접 만들어야 한다. 
+    // 제어의 역전을 위해 컴포넌트로 등록을 해야하는데 라이브러리가 우리가 손댈 수 없음
+    // 3개의 구현체 중 무얼 만드는 건지 모르기 때문에 우리가 직접 해줘야 한다.
+    // 생성자를 통해 초기화 하는 것이 제일 좋다. (아래는 필드 안에서 초기화까지 한 것!)
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     @Override
     public String getMethod() {
         return "This method is GET method.";
@@ -37,6 +48,14 @@ public class MainServiceImplement implements MainService {
         // VALUES(dto.getEmail(), dto.getPassword(), ...);
 
         try {
+            // description: 비밀번호 암호화 작업 //
+            // description: 1. dto로부터 평문의 비밀번호(암호화할 문자)를 가져온다. //
+            String password = dto.getPassword();
+            // description: 2. PasswordEncoder의 인스턴스의 encode() 메서드로 평문을 암호화 한다 //
+            String encodedPassword = passwordEncoder.encode(password);
+            // description: 3. dto에 다시 주입 //
+            dto.setPassword(encodedPassword);
+
             // description: Create 작업 순서 (INSERT) //
             // description: 1. Entity 인스턴스 생성 //
             UserEntity userEntity = new UserEntity(dto);

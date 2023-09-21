@@ -6,6 +6,7 @@ import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -195,6 +196,16 @@ public class MainController {
         ResponseEntity<String> response = ResponseEntity.status(HttpStatus.OK).body(subject);
 
         return response;
+    }
+
+    @GetMapping("principle")
+    public ResponseEntity<String> getPrinciple(
+        // description: Spring Security Context에 등록되어 있는 접근 주체를 가져오는 어노테이션 //
+        // 현재 인증이 필요 없는 Get이지만 인증이 필요 없을 뿐 인증을 하지 말라는 뜻이 아님! 인증한 결과를 받아 올 수 있음.
+        // 인증하지 않은 경우 Authorization의 No Auth 타입에 "anonymousUser" 가 나온다.
+        @AuthenticationPrincipal String subject
+    ) {
+        return ResponseEntity.status(HttpStatus.OK).body(subject);
     }
     
 }
