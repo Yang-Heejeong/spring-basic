@@ -45,15 +45,16 @@ public class JwtProvider {
     public String validate(String jwt) {
 
         Claims claims = null;
+
         try {
             // description: Jwts 클래스의 parser() 메서드를 통해서 파싱 시작 //
             claims = Jwts.parser()
             // description: setSignKey() 메서드를 통해서 parser에 비밀키를 등록하여 검증 //
-                                .setSigningKey(secretKey)
+                            .setSigningKey(secretKey)
             // description: parseClaimsJws() 메서드를 통해서 파싱 처리 //
-                                .parseClaimsJws(jwt)
+                            .parseClaimsJws(jwt)
             // description: getBody() 메서드를 통해서 클레임(페이로드)를 꺼내옴 //
-                                .getBody();
+                            .getBody();
         } catch (Exception exception) {
             exception.printStackTrace();
             return null;

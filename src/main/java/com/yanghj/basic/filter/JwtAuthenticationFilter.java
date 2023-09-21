@@ -58,7 +58,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             AbstractAuthenticationToken authenticationToken
                 // description: UsernamePasswordAuthenticationToken - 사용자이름, 패스워트, 권한으로 구성되어 있는 토큰 객체 //
                 = new UsernamePasswordAuthenticationToken(subject, null, AuthorityUtils.NO_AUTHORITIES);
-            // description: 4. 인증 토큰에 어던 요청에 대한 인증 토큰인지 정보를 저장 //
+            // description: 4. 인증 토큰에 어떤 요청에 대한 인증 토큰인지 정보를 저장 //
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
             // description: 5. 비어있는 인증 보안 컨텍스트 생성 //
