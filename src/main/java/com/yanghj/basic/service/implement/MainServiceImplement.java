@@ -8,11 +8,14 @@ import org.springframework.stereotype.Service;
 
 import com.yanghj.basic.dto.request.PatchNicknameRequestDto;
 import com.yanghj.basic.dto.request.PostUserRequestDto;
+import com.yanghj.basic.dto.request.SignInRequestDto;
 import com.yanghj.basic.dto.response.DeleteUserResponseDto;
 import com.yanghj.basic.dto.response.PatchNicknameResponseDto;
 import com.yanghj.basic.dto.response.PostUserResponseDto;
 import com.yanghj.basic.dto.response.ResponseDto;
+import com.yanghj.basic.dto.response.SignInResponseDto;
 import com.yanghj.basic.entity.UserEntity;
+import com.yanghj.basic.provider.JwtProvider;
 import com.yanghj.basic.repository.UserRepository;
 import com.yanghj.basic.service.MainService;
 
@@ -26,11 +29,13 @@ import lombok.RequiredArgsConstructor;
 public class MainServiceImplement implements MainService {
 
     private final UserRepository userRepository;
+    private final JwtProvider jwtProvider;
 
     // description: PasswordEncoder - 비밀번호를 안전하게 암호화하고 검증하는 인터페이스 //
     // description: BCryptPasswordEncoder - Bcrypt 해시 알고리즘을 사용하는 PasswordEncoder 구현 클래스 //
     // 해시 : 임의의 길이의 데이터를 고정된 길이의 데이터로 매핑하는 함수 //
     // 위와 달리 아래는 생성자를 직접 만들어야 한다. 
+    // 컴포넌트 등록이 되어있지 않아서 직접 만들어야 한다.
     // 제어의 역전을 위해 컴포넌트로 등록을 해야하는데 라이브러리가 우리가 손댈 수 없음
     // 3개의 구현체 중 무얼 만드는 건지 모르기 때문에 우리가 직접 해줘야 한다.
     // 생성자를 통해 초기화 하는 것이 제일 좋다. (아래는 필드 안에서 초기화까지 한 것!)
@@ -120,6 +125,43 @@ public class MainServiceImplement implements MainService {
 
     }
 
-    
+    @Override
+    public ResponseEntity<? super SignInResponseDto> signIn(SignInRequestDto dto) {
+        
+        SignInResponseDto responseBody = null;
+
+        try {
+
+            String email = dto.getEmail();
+
+            // description: 1. dto로 받은 email을 이용하여 데이터베이스에서 조회 //
+            UserEntity userEntity = userRepository.findByEmail(email);
+            // description: 2. email에 해당하는 레코드가 존재하는지 확인 //
+            if (userEntity == null)
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ResponseDto("SF", "Sign In Failed"));
+            // description: 3. userEntity에서 암호화 되어 있는 password 추출 //
+            String encodedPassword = userEntity.getPassword();
+            // description: 4. dto에서 평문의 password 추출 //
+            String password = dto.getPassword();
+            // description: 5. 암호화되어 있는 password와 평문의 password를 비교 //
+            // description: matches() - 평문의 문자열과 암호화된 문자열을 비교 (평문 문자열, 암호화된 문자열) //
+            boolean isMatched = passwordEncoder.matches(password, encodedPassword);
+            if (!isMatched)
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ResponseDto("SF", "Sign In Failed"));
+
+            // description: 6. 토큰 생성 //
+            String token = jwtProvider.create(email);
+
+            responseBody = new SignInResponseDto("SU", "SUCCESS", token);
+
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("DBE", "Database Error"));
+        }
+        
+        return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+
+    }
     
 }

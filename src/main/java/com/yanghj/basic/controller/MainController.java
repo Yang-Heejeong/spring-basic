@@ -23,10 +23,12 @@ import com.yanghj.basic.dto.request.PatchNicknameRequestDto;
 import com.yanghj.basic.dto.request.PatchValidationDto;
 import com.yanghj.basic.dto.request.PostRequestBodyDto;
 import com.yanghj.basic.dto.request.PostUserRequestDto;
+import com.yanghj.basic.dto.request.SignInRequestDto;
 import com.yanghj.basic.dto.response.DeleteUserResponseDto;
 import com.yanghj.basic.dto.response.PatchNicknameResponseDto;
 import com.yanghj.basic.dto.response.PostUserResponseDto;
 import com.yanghj.basic.dto.response.ResponseDto;
+import com.yanghj.basic.dto.response.SignInResponseDto;
 import com.yanghj.basic.dto.response.TmpResponseDto;
 import com.yanghj.basic.provider.JwtProvider;
 import com.yanghj.basic.service.MainService;
@@ -206,6 +208,14 @@ public class MainController {
         @AuthenticationPrincipal String subject
     ) {
         return ResponseEntity.status(HttpStatus.OK).body(subject);
+    }
+
+    @PostMapping("sign-in")
+    public ResponseEntity<? super SignInResponseDto> signIn(
+        @RequestBody @Valid SignInRequestDto requsetBody
+    ) {
+        ResponseEntity<? super SignInResponseDto> response = mainService.signIn(requsetBody);
+        return response;
     }
     
 }
